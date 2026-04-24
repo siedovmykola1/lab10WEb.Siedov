@@ -1,0 +1,35 @@
+@page "/todo"
+@using lab10WEB
+
+<PageTitle>Todo List</PageTitle>
+
+<h1>Мій список справ (@todos.Count(todo => !todo.IsDone))</h1>
+
+<ul class="list-unstyled">
+    @foreach (var todo in todos)
+    {
+        <li class="mb-2">
+            <input type="checkbox" @bind="todo.IsDone" class="form-check-input me-2" />
+            <input @bind="todo.Title" class="form-control d-inline-block w-auto" placeholder="Назва справи" />
+        </li>
+    }
+</ul>
+
+<div class="mt-3">
+    <input placeholder="Що плануєте зробити?" @bind="newTodo" class="form-control d-inline-block w-auto" />
+    <button @onclick="AddTodo" class="btn btn-success">Додати справу</button>
+</div>
+
+@code {
+    private List<TodoItem> todos = new();
+    private string? newTodo;
+
+    private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            todos.Add(new TodoItem { Title = newTodo });
+            newTodo = string.Empty;
+        }
+    }
+}
